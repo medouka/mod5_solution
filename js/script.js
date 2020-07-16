@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
   allCategoriesUrl,
-  [...], // ***** <---- TODO: STEP 1: Substitute [...] ******
+  buildAndShowHomeHTML(allCategoriesUrl),// ***** <---- TODO: STEP 1: Substitute [...] ******
   true); // Explicitly setting the flag to get JSON from server processed into an object literal
 });
 // *** finish **
@@ -97,12 +97,24 @@ function buildAndShowHomeHTML (categories) {
   $ajaxUtils.sendGetRequest(
     homeHtmlUrl,
     function (homeHtml) {
+      var hhtml= homeHtml;
+      document.querySelector("#main-content").innerHTML = hhtml;
+
+      const Allcategories1 = ["L", "A", "B", "SP", "F", "C", "DK", "VG", "CU", "NL", "NF", "PF", "FR", "CM", "FR", "SO", "DS", "D", "SR" ];
+      // Given array of category objects, returns a random category object.
+      
+        // Choose a random index into the array (from 0 inclusively until array length (exclusively))
+        const randomArrayIndex =  Allcategories1[ Math.floor( Math.random() * ( Allcategories1.length )) ];
+
+        // return category object with that randomArrayIndex
+        
+        var RAI = '' + randomArrayIndex;
 
       // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
       // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
       // variable's name implies it expects.
-      // var chosenCategoryShortName = ....
-
+      
+      
 
       // TODO: STEP 3: Substitute {{randomCategoryShortName}} in the home html snippet with the
       // chosen category from STEP 2. Use existing insertProperty function for that purpose.
@@ -115,27 +127,18 @@ function buildAndShowHomeHTML (categories) {
       // Hint: you need to surround the chosen category short name with something before inserting
       // it into the home html snippet.
       //
-      // var homeHtmlToInsertIntoMainPage = ....
+      var homeHtmlToInsertIntoMainPage = insertProperty(hhtml, 'randomCategoryShortName' ,  RAI ); //input should be like 'L'
 
 
       // TODO: STEP 4: Insert the the produced HTML in STEP 3 into the main page
       // Use the existing insertHtml function for that purpose. Look through this code for an example
       // of how to do that.
-      // ....
+      insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
 
     },
     false); // False here because we are getting just regular HTML from the server, so no need to process JSON.
 }
 
-
-// Given array of category objects, returns a random category object.
-function chooseRandomCategory (categories) {
-  // Choose a random index into the array (from 0 inclusively until array length (exclusively))
-  var randomArrayIndex = Math.floor(Math.random() * categories.length);
-
-  // return category object with that randomArrayIndex
-  return categories[randomArrayIndex];
-}
 
 
 // Load the menu categories view
